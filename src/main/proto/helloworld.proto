@@ -1,0 +1,11 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "org.example.grpc";
+option java_outer_classname = "GrpcExchanger";
+service Exchanger {
+  rpc exchange (Message) returns (Message) {}
+}
+
+message Message {
+  bytes message = 1;
+}
