@@ -33,5 +33,29 @@ public class GrpcServer {
             responseObserver.onNext(resp);
             responseObserver.onCompleted();
         }
+
+        @Override
+        public StreamObserver<Message> biStream(StreamObserver<Message> responseObserver) {
+            return new StreamObserver<Message>() {
+
+                @Override
+                public void onNext(Message value) {
+                    String request = value.getMessage().toString(StandardCharsets.UTF_8);
+                    System.out.println(request);
+                    Message reply = Message.newBuilder().setMessage(ByteString.copyFrom(("response:" + request).getBytes())).build();
+                    responseObserver.onNext(reply);
+                }
+
+                @Override
+                public void onError(Throwable t) {
+
+                }
+
+                @Override
+                public void onCompleted() {
+
+                }
+            };
+        }
     }
 }

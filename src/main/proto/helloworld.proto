@@ -4,6 +4,7 @@ option java_package = "org.example.grpc";
 option java_outer_classname = "GrpcExchanger";
 service Exchanger {
   rpc exchange (Message) returns (Message) {}
+  rpc biStream (stream Message) returns (stream Message) {}
 }
 
 message Message {
