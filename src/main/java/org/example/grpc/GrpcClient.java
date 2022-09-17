@@ -47,9 +47,9 @@ public class GrpcClient {
         requestObserver.onNext(req);
         requestObserver.onNext(req);
         call.cancel("hello ex", new RuntimeException("ex"));
+        requestObserver.onNext(req);
+        requestObserver.onNext(req);
         requestObserver.onCompleted();
-        requestObserver.onNext(req);
-        requestObserver.onNext(req);
         System.in.read();
     }
 }
