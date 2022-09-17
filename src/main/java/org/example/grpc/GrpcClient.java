@@ -9,6 +9,7 @@ import io.grpc.stub.StreamObserver;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import static io.grpc.stub.ClientCalls.asyncBidiStreamingCall;
 import static org.example.grpc.ExchangerGrpc.getBiStreamMethod;
 import static org.example.grpc.ExchangerGrpc.newStub;
 
@@ -23,7 +24,7 @@ public class GrpcClient {
                 .usePlaintext().build();
         ExchangerGrpc.ExchangerStub stub = newStub(channel);
         ClientCall<Message, Message> call = channel.newCall(getBiStreamMethod(), stub.getCallOptions());
-        StreamObserver<Message> requestObserver = stub.biStream(new StreamObserver<Message>() {
+        StreamObserver<Message> requestObserver = asyncBidiStreamingCall(call, new StreamObserver<Message>() {
             @Override
             public void onNext(Message value) {
                 System.out.println("响应："
@@ -32,11 +33,13 @@ public class GrpcClient {
 
             @Override
             public void onError(Throwable t) {
+                t.printStackTrace();
 
             }
 
             @Override
             public void onCompleted() {
+                System.out.println("onCompleted");
 
             }
         });
